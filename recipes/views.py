@@ -14,10 +14,13 @@ def home(request):
 
 def category(request, category_id):
     recipes = Recipe.objects.filter(category__id=category_id, is_published=True)
+    if not recipes:
+        return render(request, "recipes/pages/404.html", status=404)
+
     return render(
         request,
         "recipes/pages/category.html",
-        context={"recipes": recipes},
+        context={"recipes": recipes, "title": f"{recipes.first().category.name}"},
     )
 
 
